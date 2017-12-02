@@ -20,7 +20,7 @@ def main():
     elif sys.argv[1]=='run':
         rc,V,G=transship_dist.solve_model(C)
         if rc != 0:
-            print 'Infeasible'
+            print('Infeasible')
         else:
             T=[]
             for i in range(n):

@@ -30,7 +30,7 @@ def main():
     elif sys.argv[1]=='tree':
         rc, Val,Tree = solve_tree_model(C)
         if rc != 0:
-            print 'Infeasible'
+            print('Infeasible')
         else: 
             tableutils.printmat(tableutils.wrapmat(Tree,[],['From','To','Distance']),True,0)
     elif sys.argv[1]=='pm':
@@ -38,7 +38,7 @@ def main():
         t=[0,3,0,3,9,0,9,16,21,21,21,3]
         rc,Path = critical_tasks(D,t)
         if rc != 0:
-            print 'Infeasible'
+            print('Infeasible')
         else:
-            print Path
+            print(Path)
 main()

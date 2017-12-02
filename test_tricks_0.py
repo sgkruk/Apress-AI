@@ -8,5 +8,5 @@ def main():
     s = pywraplp.Solver('Test Box',pywraplp.Solver.GLOP_LINEAR_PROGRAMMING)
     x = [s.NumVar(-1,6,''),s.NumVar(-3,5,'')]
     bounds = bounds_on_box(a,x,b)
-    print bounds==[-16,22]    
+    print(bounds==[-16,22])
 main()

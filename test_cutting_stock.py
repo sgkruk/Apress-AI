@@ -19,7 +19,7 @@ def main():
         rc,nb,rolls,w=solve_model(C)
         end = time.clock()
         if rc != 0:
-            print 'Infeasible'
+            print('Infeasible')
         else:
             R = [[str(rolls[i][0]) , tableutils.set2string(tableutils.flatten(rolls[i][1:]))] for i in range(nb)]
             tableutils.printmat(tableutils.wrapmat(R,[str(i) for i in range(nb)],['rolls','Waste '+str(sum(w)),'Pattern']),True,0)

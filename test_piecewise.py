@@ -54,7 +54,7 @@ def main():
             G[4].append('f(x)='+str("{0:.2f}".format(sum(G[1][i]*G[4][i] for i in range(n+1)))))
             tableutils.printmat(G,True)
         else:
-            print 'Infeasible',rc,G,H
+            print('Infeasible',rc,G,H)
     elif sys.argv[1]=='non':
         G=verbose_minimize_non_linear(my_function,2,8,0.05)
         m=len(G)

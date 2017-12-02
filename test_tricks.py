@@ -22,7 +22,7 @@ def main():
     ldg=sosn(s,k,y)
     rc = s.Solve()
     if rc != 0:
-      print 'Error', rc
+      print('Error', rc)
     sy = SolVal(y)
     sx = SolVal(x)
     yy = [[' ','x'][e>0] for e in sy]

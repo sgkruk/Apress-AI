@@ -9,5 +9,5 @@ def main():
     x = [s.NumVar(3,5,'x[%i]' % i) for i in range(2)]
     b = 10
     bounds = bounds_on_box(a,x,b)
-    print bounds==[-1,5]    
+    print(bounds==[-1,5])
 main()

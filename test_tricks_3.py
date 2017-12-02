@@ -1,4 +1,5 @@
 
+from __future__ import print_function
 from ortools.linear_solver import pywraplp  
 from my_or_tools import SolVal, ObjVal
 from my_or_tools_c import maximax
@@ -10,7 +11,7 @@ def main():
     x = s.NumVar(2,5,'x')
     z,l = maximax(s,a,[x],b) 
     rc = s.Solve()
-    print 'x = ',SolVal(x)
-    print 'z = ',SolVal(z)
-    print 'delta = ', SolVal(l)
+    print('x = ',SolVal(x))
+    print('z = ',SolVal(z))
+    print('delta = ', SolVal(l))
 main()
