@@ -50,10 +50,10 @@ from my_or_tools import k_out_of_n, reify
 
 def solve_model(S,I,R,P):
   s = newSolver('Staff Scheduling',True)
-  nbS,nbI,nbSets,nbPairs,nbC = len(S),len(I),len(R),len(P),S[-1][1]+1
-  nbT = 1+max(e[2] for e in S)
-  x = [[s.IntVar(0,1,'') for _ in range(nbS)] for _ in range(nbI)] 
-  z = [[[s.IntVar(0,1,'') for _ in range(len(P[p][1]))] \
+  nbS,nbI,nbSets,nbPairs = len(S),len(I),len(R),len(P)
+  nbC,nbT = S[-1][1]+1,1+max(e[2] for e in S)
+  x=[[s.IntVar(0,1,'') for _ in range(nbS)] for _ in range(nbI)] 
+  z=[[[s.IntVar(0,1,'') for _ in range(len(P[p][1]))] \
         for p in range(nbPairs)] for _ in range(nbI)]
   for j in range(nbS): 
     k_out_of_n(s,1,[x[i][j] for i in range(nbI)],'<=')
@@ -61,27 +61,32 @@ def solve_model(S,I,R,P):
     s.Add(sum(x[i][j] for j in range(nbS)) >= I[i][1][0])    
     s.Add(sum(x[i][j] for j in range(nbS)) <= I[i][1][1])
     for t in range(nbT): 
-      k_out_of_n(s,1,[x[i][j] for j in range(nbS) if S[j][2]==t],'<=')
-  WC = sum(x[i][j] * I[i][2][c] for i in range(nbI) \
-           for j in range(nbS) for c in range(nbC) if S[j][1] == c) 
-  WR = sum(I[i][3][r] * sum(x[i][j] for j in R[r][1]) \
-           for r in range(nbSets) for i in range(nbI)) 
+      k_out_of_n(s,1,
+          [x[i][j] for j in range(nbS) if S[j][2]==t],'<=')
+  WC=sum(x[i][j] * I[i][2][c] for i in range(nbI) \
+     for j in range(nbS) for c in range(nbC) if S[j][1] == c) 
+  WR=sum(I[i][3][r] * sum(x[i][j] for j in R[r][1]) \
+     for r in range(nbSets) for i in range(nbI)) 
   for i in range(nbI): 
     for p in range(nbPairs):
       if I[i][4][p] != 0:
         for k in range(len(P[p][1])):
-          reify(s,[1,1],[x[i][P[p][1][k][0]],x[i][P[p][1][k][1]]],\
-                2,z[i][p][k],'>=')
+          xip1k0,xip1k1=x[i][P[p][1][k][0]],x[i][P[p][1][k][1]]
+          reify(s,[1,1],[xip1k0,xip1k1],2,z[i][p][k],'>=')
   WP = sum(z[i][p][k]*I[i][4][p] for i in range(nbI) \
            for p in range(nbPairs) for k in range(len(P[p][1])) \
            if I[i][4][p] != 0) 
   s.Maximize(WC+WR+WP)
-  rc,xs = s.Solve(),[]
-  for i in range(nbI):
-    xs.append([i,[[j,(I[i][2][S[j][1]],\
-            sum(I[i][3][r] for r in range(nbSets) if j in R[r][1]),
-            sum(SolVal(z[i][p][k])*I[i][4][p]/2 
-            for p in range(nbPairs) for k in range(len(P[p][1])) 
-              if j in P[p][1][k]))] for j in range(nbS) \
-              if SolVal(x[i][j])>0]])
+  rc,xs = s.Solve(),ss_ret(x,z,nbI,nbSets,nbS,nbPairs,I,S,R,P)
   return rc,SolVal(x),xs,ObjVal(s)
+
+def ss_ret(x,z,nbI,nbSets,nbS,nbPairs,I,S,R,P):
+    xs=[]
+    for i in range(nbI):
+      xs.append([i,[[j,(I[i][2][S[j][1]],\
+         sum(I[i][3][r] for r in range(nbSets) if j in R[r][1]),
+         sum(SolVal(z[i][p][k])*I[i][4][p]/2 
+              for p in range(nbPairs) for k in range(len(P[p][1])) 
+                if j in P[p][1][k]))] for j in range(nbS) \
+                if SolVal(x[i][j])>0]])
+    return xs

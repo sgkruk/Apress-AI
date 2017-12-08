@@ -14,5 +14,5 @@ def main():
         T.append(t)
     T  = [T[i]/T[0] for i in range(len(T))]
     for i in range(S):
-        print '{0:4d} {1:.0f}'.format(N[i],T[i])
+        print('{0:4d} {1:.0f}'.format(N[i],T[i]))
 main()

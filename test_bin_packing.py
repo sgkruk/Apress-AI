@@ -1,4 +1,5 @@
 
+from __future__ import print_function
 import time, tableutils
 from bin_packing import gen_data, solve_model
 def main():
@@ -26,20 +27,20 @@ def main():
         end = time.clock()
         #print 'Elapsed time ', end-start, ' optimal value ', Val
         if rc != 0:
-            print 'Infeasible'
+            print('Infeasible')
         else:
             if sys.argv[1] in ['run', 'nrun']:
                 w = sum(e[2] for row in T2P for e in row[1] )
                 t = sum(1 for row in T2P for e in row[1] if len(row)>0)
-                print 'Trucks {0}, Packages {2} ({1})'.format(Val,w,t)
-                print '(id weight), (id weight)*'
+                print('Trucks {0}, Packages {2} ({1})'.format(Val,w,t))
+                print('(id weight), (id weight)*')
                 for row in T2P:
                     if (len(row[1])):              
-                        print '{0:2} ({2}),"{1}"'.format(row[0],row[1],sum(e[2] for e in row[1]))
+                        print('{0:2} ({2}),"{1}"'.format(row[0],row[1],sum(e[2] for e in row[1])))
             else: 
-                print 'Weight, Truck id'
+                print('Weight, Truck id')
                 for row in P2T:
-                    print '{0},"{1}"'.format(row[0],row[1])
+                    print('{0},"{1}"'.format(row[0],row[1]))
 
 
 main()

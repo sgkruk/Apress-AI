@@ -72,22 +72,22 @@ def main():
                 rc,x = solve_sudoku(G)
                 end = time.clock()
                 if rc != 0:
-                    print count, 'WTF!!!!!!!'
-                print '{0:06d},{1:8.0f}'.format(count,(end-start)*1000)
+                    print(count, 'WTF!!!!!!!')
+                print('{0:06d},{1:8.0f}'.format(count,(end-start)*1000))
     elif sys.argv[1]=='smm':
         rc,x = solve_smm()
         if rc == 0:
             x = [['S', 'E', 'N', 'D', 'M', 'O', 'R', 'Y'],x]
             tableutils.printmat(x,True,0)
         else:
-            print 'Infeasible'
+            print('Infeasible')
     elif sys.argv[1]=='smm':
         rc,x = solve_smm()
         if rc == 0:
             x = [['S', 'E', 'N', 'D', 'M', 'O', 'R', 'Y'],x]
             tableutils.printmat(x,True,0)
         else:
-            print 'Infeasible'
+            print('Infeasible')
     elif sys.argv[1]=='lady':
         STA=["The lady is in an odd-numbered room.",
              "This room is empty.",
@@ -106,6 +106,6 @@ def main():
                 x.append([i+1,STA[i],['False','True'][int(S[i])], ['','Lady','Tiger'][int(R[i][0])]])
             tableutils.printmat(x)
         else:
-            print 'Infeasible'
+            print('Infeasible')
 
 main()

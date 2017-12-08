@@ -16,7 +16,8 @@ def solve_maxrook(n):
   Count = s.Sum(x[i][j] for i in range(n) for j in range(n)) 
   s.Maximize(Count)
   rc = s.Solve()
-  y =[[[' ','R'][int(SolVal(x[i][j]))] for j in range(n)] for i in range(n)]
+  y =[[[' ','R'][int(SolVal(x[i][j]))]\
+       for j in range(n)] for i in range(n)]
   return rc,y
 
 def get_se(x,i,j,n):
@@ -39,11 +40,13 @@ def solve_maxpiece(n,p):
   Count = s.Sum(x[i][j] for i in range(n) for j in range(n)) 
   s.Maximize(Count)
   rc = s.Solve()
-  y = [[[' ',p][int(SolVal(x[i][j]))] for j in range(n)] for i in range(n)]
+  y=[[[' ',p]\
+     [int(SolVal(x[i][j]))] for j in range(n)] for i in range(n)]
   return rc,y
 
 def get_subgrid(x,i,j):
-  return [x[k][l] for k in range(i*3,i*3+3) for l in range(j*3,j*3+3)]
+  return [x[k][l] for k in range(i*3,i*3+3)\
+                  for l in range(j*3,j*3+3)]
 def all_diff(s,x):
   for k in range(1,len(x[0])):
     s.Add(sum([e[k] for e in x]) <= 1)
@@ -54,10 +57,12 @@ def solve_sudoku(G):
     row=[]
     for j in range(n):
       if G[i][j] == None:
-        v=[s.IntVar(1,n+1,'')]+[s.IntVar(0,1,'') for _ in range(n)]
+        v=[s.IntVar(1,n+1,'')]+[s.IntVar(0,1,'')\
+                                for _ in range(n)]
         s.Add(v[0] == sum(k*v[k] for k in range(1,n+1))) 
       else:
-        v=[G[i][j]]+[0 if k!=G[i][j] else 1 for k in range(1,n+1)]
+        v=[G[i][j]]+[0 if k!=G[i][j] else 1\
+                     for k in range(1,n+1)]
       row.append(v)
     x.append(row) 
   for i in range(n):
@@ -67,16 +72,18 @@ def solve_sudoku(G):
     for j in range(3):
       all_diff(s,get_subgrid(x,i,j))
   rc = s.Solve()
-  return rc,[[SolVal(x[i][j][0]) for j in range(n)] for i in range(n)]
+  return rc,[[SolVal(x[i][j][0]) for j in range(n)]\
+             for i in range(n)]
 
 def newIntVar(s, lb, ub):
-  l = ub-lb+1
-  x = [s.IntVar(lb, ub, '')]+[s.IntVar(0,1,'') for _ in range(l)]
+  l=ub-lb+1
+  x=[s.IntVar(lb, ub, '')]+[s.IntVar(0,1,'') for _ in range(l)]
   s.Add(1    == sum(         x[k] for k in range(1,l+1)))
   s.Add(x[0] == sum((lb+k-1)*x[k] for k in range(1,l+1)))
   return x
 def all_different(s,x):
-  lb,ub=min(int(e[0].Lb()) for e in x),max(int(e[0].Ub()) for e in x)
+  lb=min(int(e[0].Lb()) for e in x)
+  ub=max(int(e[0].Ub()) for e in x)
   for v in range(lb,ub+1):
     all = []
     for e in x:
@@ -110,7 +117,8 @@ def solve_lady_or_tiger():
   for i in Rooms:
     reify_force(s,[1],[R[i][i_tiger]],0,S[i],'<=') 
     reify_raise(s,[1],[R[i][i_lady]],1,S[i],'>=') 
-  reify(s,[1]*5,[R[i][i_lady] for i in range(1,10,2)],1,S[1],'>=') 
+  v=[1]*5
+  reify(s,v,[R[i][i_lady] for i in range(1,10,2)],1,S[1],'>=') 
   reify(s,[1],[R[2][i_empty]],1,S[2],'>=') 
   reify(s,[1,-1],[S[5],S[7]],0,S[3],'>=') 
   reify(s,[1],[S[1]],0,S[4],'<=') 

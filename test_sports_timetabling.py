@@ -38,7 +38,7 @@ def main():
         else:
             rc,v,Cal=solve_model(D,T)
         if rc != 0:
-            print 'Infeasible'
+            print('Infeasible')
         else:
             R=[['Week', 'Matches']]
             nbWeeks=T[3]
