@@ -15,9 +15,9 @@ def main():
     if sys.argv[1]=='data':
         tableutils.printmat(tableutils.wrapmat(C,[str(i) for i in range(n)],['Order','Nb rolls','% Width']))
     elif sys.argv[1]=='run':
-        start = time.clock()
+        start = time.process_time()
         rc,nb,rolls,w=solve_model(C)
-        end = time.clock()
+        end = time.process_time()
         if rc != 0:
             print('Infeasible')
         else:
@@ -25,9 +25,9 @@ def main():
             tableutils.printmat(tableutils.wrapmat(R,[str(i) for i in range(nb)],['rolls','Waste '+str(sum(w)),'Pattern']),True,0)
     elif sys.argv[1]=='large':
         #C = [[44, 81], [3,70],[48,68]]
-        start = time.clock()
+        start = time.process_time()
         rc,C,y,rolls=solve_large_model(C)  
-        end = time.clock()
+        end = time.process_time()
         nb = len(rolls)
         #tableutils.printmat(C)
         #tableutils.printmat([y])
